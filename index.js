@@ -4,8 +4,8 @@ const bot = new Discord.Client({
 	presence: {
 		status: "online",
 		activity: {
-			name: "Helping frens",
-			type: "CUSTOM_STATUS",
+			name: "frens play",
+			type: "WATCHING",
 		}
 	}
 });
@@ -24,9 +24,12 @@ bot.on("message", message => {
 
 	const args = message.content.slice(prefix.length).trim().split(/ +/);
 	const command = args.shift().toLowerCase();
-
+	try {
 	if (command in commands)
 		commands[command](args, message);
+	} catch (err) {
+		console.log(err);
+	}
 });
 
 const commands = {
@@ -38,24 +41,14 @@ const commands = {
  * @param {*} args 
  * @param {Discord.Message} message 
  */
-function queue(args, message) {
-	
-	console.log("queue");
+async function queue(args, message) {
 	const role = message.guild.roles.cache.find(role => role.name === 'LFG');
-	console.log("found role");
 	if (!message.member.roles.cache.some(role => role.name === 'LFG')) {
-		console.log("doesn't have role role");
-		message.member.roles.add(role).catch(err => {
-			console.log("dead");
-			console.log(err);
-		});
+		await message.member.roles.add(role);
+		await message.channel.send({ content: "Role added!"});
 	} else {
-		console.log("have role role");
-		message.member.roles.remove(role).catch(err => {
-			console.log("dead");
-			console.log(err);
-		});
+		await message.member.roles.remove(role);
+		await message.channel.send({ content: "Role removed!"});
 	}
-	console.log("stop");
 }
 
