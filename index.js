@@ -66,6 +66,7 @@ bot.on("messageReactionAdd", (reaction, user) => {
 	}
 });
 
+
 bot.on("messageReactionRemove", reaction => {
 	const mainGuild = bot.guilds.cache.find((guild) => guild.id == server);
 	const member = mainGuild.members.cache.find((user) => user.id == user.id);
@@ -111,10 +112,11 @@ addCommand(["q", "queue"], async (args, message) => {
 
 addCommand(["code"], async (args, message) => {
 	if (args.length < 1) {
-		message.reply("!code ABCDEF");
+		message.channel.send("!code ABCDEF");
 		return;
 	}
+
 	const main = message.guild.channels.cache.find((channel) => channel.id == channels.MainVoice);
-	console.log(main);
-	await main.setName(args[0]);
+	console.log({main, name: args[0]});
+	await main.na(args[0]);
 });
