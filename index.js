@@ -118,5 +118,5 @@ addCommand(["code"], async (args, message) => {
 
 	const main = message.guild.channels.cache.find((channel) => channel.id == channels.MainVoice);
 	console.log({main, name: args[0]});
-	await main.na(args[0]);
+	await main.setName(args[0]);
 });
