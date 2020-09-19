@@ -39,11 +39,17 @@ const commands = {
  * @param {Discord.Message} message 
  */
 function queue(args, message) {
+	
+	console.log("queue");
 	const role = message.guild.roles.cache.find(role => role.name === 'LFG');
-	if (message.member.roles.cache.some(role => role.name === 'LFG')) {
+	console.log("found role");
+	if (!message.member.roles.cache.some(role => role.name === 'LFG')) {
+		console.log("doesn't have role role");
 		message.member.roles.add(role);
 	} else {
+		console.log("have role role");
 		message.member.roles.remove(role);
 	}
+	console.log("stop");
 }
 
