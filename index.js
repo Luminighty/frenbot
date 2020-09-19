@@ -1,4 +1,8 @@
 const Discord = require("discord.js");
+const util = require("util");
+const misc = require("./misc");
+const consts = require("./consts");
+const commands = require("./command");
 
 const bot = new Discord.Client({
 	presence: {
@@ -7,29 +11,10 @@ const bot = new Discord.Client({
 			name: "frens play",
 			type: "WATCHING",
 		}
-	}
+	}, partials: ['MESSAGE', 'REACTION'],
 });
 
-const prefix = "!";
 
-const roles = {
-	LFG: '756927331246800966',
-	region: {
-		message: '756942274742452274',
-		EU: '756920658088427601',
-		AU: '756920636135440466',
-		US: '756920607630688276',
-	},
-};
-
-const server = '756916913774395443';
-
-const channels = {
-	MainVoice: '756916914655330379',
-};
-
-// category 	756916914655330376
-// 				756916914655330379
 bot.on("ready", function() {
 	console.log(`${bot.user.username} is online!`);
 });
@@ -38,21 +23,9 @@ bot.login(process.env.token);
 
 
 bot.on("message", message => {
-	if (!message.content.startsWith(prefix) || message.author.bot) return;
-
-	const args = message.content.slice(prefix.length).trim().split(/ +/);
-	const command = args.shift().toLowerCase();
-	try {
-	if (command in commands)
-		commands[command](args, message);
-	} catch (err) {
-		console.log(err);
-	}
+	commands.parseMessage(message);
 });
 
-function findRole(guild, id) {
-	return guild.roles.cache.find((role) => role.id == id);
-}
 
 bot.on("messageReactionAdd", (reaction, user) => {
 	const mainGuild = bot.guilds.cache.find((guild) => guild.id == server);
@@ -69,56 +42,22 @@ bot.on("messageReactionAdd", (reaction, user) => {
 });
 
 
-bot.on("messageReactionRemove", reaction => {
-	const mainGuild = bot.guilds.cache.find((guild) => guild.id == server);
-	const member = mainGuild.members.cache.find((user) => user.id == user.id);
-	if (reaction.message.id == roles.region.message) {
-		switch (reaction.emoji.name) {
-			case "flag_eu": member.roles.remove(findRole(roles.region.EU)); break;
-			case "flag_us": member.roles.remove(findRole(roles.region.US)); break;
-			case "flag_au": member.roles.remove(findRole(roles.region.AU)); break;
-		} 
-	}
-});
+commands.addRoleToggle(["q", "queue", "lfg"], consts.roles.LFG);
+commands.addRoleToggle(["eu"], consts.roles.region.EU);
+commands.addRoleToggle(["us"], consts.roles.region.US);
+commands.addRoleToggle(["au"], consts.roles.region.AU);
 
-const commands = {};
-
-/**
- * @callback Command
- * @param {String[]} args 
- * @param {Discord.Message} member 
- */
-
-/**
- * 
- * @param {String[]} name 
- * @param {Command} func 
- */
-function addCommand(name, func) {
-	for (const key of name) 
-		commands[key] = func;
-}
+commands.addRoleToggle(["impostor", "imposter"], consts.roles.impostor);
+commands.addRoleToggle(["crewmate", "crew"], consts.roles.crewmate);
 
 
 
-addCommand(["q", "queue"], async (args, message) => {
-	const role = message.guild.roles.cache.find(role => role.name === 'LFG');
-	if (!message.member.roles.cache.some(role => role.name === 'LFG')) {
-		await message.member.roles.add(role);
-		await message.channel.send({ content: "Role added!"});
-	} else {
-		await message.member.roles.remove(role);
-		await message.channel.send({ content: "Role removed!"});
-	}
-});
-
-addCommand(["code"], async (args, message) => {
+commands.add(["code"], async (args, message) => {
 	if (args.length < 1) {
 		message.channel.send("!code ABCDEF");
 		return;
 	}
 
 	const main = message.guild.channels.cache.find((channel) => channel.id === channels.MainVoice);
-	console.log({main, name: args[0]});
-	await main.setName(args[0]);
+	await main.setName(args.join(" "));
 });
