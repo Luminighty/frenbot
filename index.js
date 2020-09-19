@@ -13,20 +13,23 @@ const bot = new Discord.Client({
 const prefix = "!";
 
 const roles = {
-	LFG: 756927331246800966,
+	LFG: '756927331246800966',
 	region: {
-		message: 756942274742452274,
-		EU: 756920658088427601,
-		AU: 756920636135440466,
-		US: 756920607630688276,
+		message: '756942274742452274',
+		EU: '756920658088427601',
+		AU: '756920636135440466',
+		US: '756920607630688276',
 	},
 };
 
-const server = 756916913774395443;
+const server = '756916913774395443';
 
 const channels = {
-	MainVoice: 756916914655330379,
+	MainVoice: '756916914655330379',
 };
+
+// category 	756916914655330376
+// 				756916914655330379
 bot.on("ready", function() {
 	console.log(`${bot.user.username} is online!`);
 });
@@ -115,7 +118,7 @@ addCommand(["code"], async (args, message) => {
 		return;
 	}
 
-	const main = message.guild.channels.cache.find((channel) => channel.id == channels.MainVoice);
+	const main = message.guild.channels.cache.find((channel) => channel.id === channels.MainVoice);
 	console.log({main, name: args[0]});
 	await main.setName(args[0]);
 });
