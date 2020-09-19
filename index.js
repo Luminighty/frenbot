@@ -45,10 +45,16 @@ function queue(args, message) {
 	console.log("found role");
 	if (!message.member.roles.cache.some(role => role.name === 'LFG')) {
 		console.log("doesn't have role role");
-		message.member.roles.add(role);
+		message.member.roles.add(role).catch(err => {
+			console.log("dead");
+			console.log(err);
+		});
 	} else {
 		console.log("have role role");
-		message.member.roles.remove(role);
+		message.member.roles.remove(role).catch(err => {
+			console.log("dead");
+			console.log(err);
+		});
 	}
 	console.log("stop");
 }
