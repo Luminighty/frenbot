@@ -6,6 +6,7 @@ const prefix = "!";
 
 bot.on("ready", function() {
 	console.log(`${bot.user.username} is online!`);
+	bot.user.setActivity("Helping frens", {type: "CUSTOM_STATUS"});
 });
 
 bot.login(process.env.token);
