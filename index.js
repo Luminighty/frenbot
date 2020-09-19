@@ -55,7 +55,9 @@ function findRole(guild, id) {
 bot.on("messageReactionAdd", (reaction, user) => {
 	const mainGuild = bot.guilds.cache.find((guild) => guild.id == server);
 	const member = mainGuild.members.cache.find((user) => user.id == user.id);
+	console.log(reaction.message.id);
 	if (reaction.message.id == roles.region.message) {
+		console.log(reaction.emoji.name);
 		switch (reaction.emoji.name) {
 			case "flag_eu": member.roles.add(findRole(roles.region.EU)); break;
 			case "flag_us": member.roles.add(findRole(roles.region.US)); break;
@@ -112,6 +114,7 @@ addCommand(["code"], async (args, message) => {
 		message.reply("!code ABCDEF");
 		return;
 	}
-	const main = message.guild.channels.cache.find((channel) => channel.id === channels.MainVoice);
+	const main = message.guild.channels.cache.find((channel) => channel.id == channels.MainVoice);
+	console.log(main);
 	await main.setName(args[0]);
 });
