@@ -27,7 +27,6 @@ const server = 756916913774395443;
 const channels = {
 	MainVoice: 756916914655330379,
 };
-
 bot.on("ready", function() {
 	console.log(`${bot.user.username} is online!`);
 });
