@@ -1,12 +1,19 @@
 const Discord = require("discord.js");
 
-const bot = new Discord.Client();
+const bot = new Discord.Client({
+	presence: {
+		status: "online",
+		activity: {
+			name: "Helping frens",
+			type: "CUSTOM_STATUS",
+		}
+	}
+});
 
 const prefix = "!";
 
 bot.on("ready", function() {
 	console.log(`${bot.user.username} is online!`);
-	bot.user.setActivity("Helping frens", {type: "CUSTOM_STATUS"});
 });
 
 bot.login(process.env.token);
