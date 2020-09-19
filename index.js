@@ -15,10 +15,11 @@ bot.login(process.env.token);
 bot.on("message", message => {
 	if (!message.content.startsWith(prefix) || message.author.bot) return;
 
-	const args = mesage.content.slice(prefix.length).trim().split(/ +/);
+	const args = message.content.slice(prefix.length).trim().split(/ +/);
 	const command = args.shift().toLowerCase();
 
-
+	if (command in commands)
+		commands[command](args, message);
 });
 
 const commands = {
