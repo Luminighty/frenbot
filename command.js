@@ -1,4 +1,5 @@
 const discord = require("discord.js");
+const consts = require("./consts");
 const commands = {};
 
 /**
@@ -31,7 +32,7 @@ exports.addRoleToggle = function (name, roleId, addedMsg = "Role added!", remove
 };
 
 exports.parseMessage = function(message) {
-	if (!message.content.startsWith(prefix) || message.author.bot) return;
+	if (!message.content.startsWith(consts.prefix) || message.author.bot) return;
 
 	const args = message.content.slice(prefix.length).trim().split(/ +/);
 	const command = args.shift().toLowerCase();
