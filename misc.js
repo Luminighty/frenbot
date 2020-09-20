@@ -13,3 +13,10 @@ exports.toggleRole = async function(member, roleId) {
 		return true;
 	}
 };
+
+
+exports.timeout = function(delayms) {
+    return new Promise(function (resolve, reject) {
+        setTimeout(resolve, delayms);
+    });
+}

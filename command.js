@@ -1,5 +1,7 @@
 const discord = require("discord.js");
 const consts = require("./consts");
+const misc = require("./misc");
+const util = require("util");
 const commands = {};
 
 /**
@@ -25,16 +27,15 @@ exports.addRoleToggle = function (name, roleId, addedMsg = "Role added!", remove
 				addedMsg : removedMsg;
 		
 		change_msg = await message.channel.send({ content });
-		await util.promisify(setTimeout(5000));
-		await change_msg.delete();
-		await message.delete();
+		await misc.timeout(5000);
+		await message.channel.bulkDelete([change_msg, message]);
 	});
 };
 
 exports.parseMessage = function(message) {
 	if (!message.content.startsWith(consts.prefix) || message.author.bot) return;
 
-	const args = message.content.slice(prefix.length).trim().split(/ +/);
+	const args = message.content.slice(consts.prefix.length).trim().split(/ +/);
 	const command = args.shift().toLowerCase();
 	try {
 	if (command in commands)

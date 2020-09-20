@@ -3,6 +3,7 @@ exports.prefix = "!";
 
 exports.roles = {
 	LFG: '756927331246800966',
+	active: '756978885987663995',
 	region: {
 		message: '756942274742452274',
 		EU: '756920658088427601',
