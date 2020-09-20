@@ -79,6 +79,20 @@ commands.add(["code"], async (args, message) => {
 	const main = message.guild.channels.cache.find((channel) => channel.id === consts.channels.MainVoice);
 	await main.setName(args.join(" "));
 	const reply = await message.channel.send("Lobby code updated!");
-	await misc.timeout(5000);
+	await misc.timeout(30000);
 	await message.channel.bulkDelete([reply, message]);
+});
+
+
+commands.add(["clear"], async (args, message) => {
+	const members = message.guild.members.cache.filter((member) => member.roles.cache.has(consts.roles.LFG));
+	const lfgRole = await misc.findRole(message.guild, consts.roles.LFG);
+	const promises = members.map((member) => new Promise((res, rej) => {
+		member.roles.remove(lfgRole);
+		res();
+	}));
+	await Promise.all(promises);
+	const removed_Message = await message.channel.send({content: "LFG roles removed!"});
+	await misc.timeout(5000);
+	await message.channel.bulkDelete([removed_Message, message]);
 });
