@@ -14,9 +14,20 @@ const bot = new Discord.Client({
 	}, partials: ['MESSAGE', 'REACTION'],
 });
 
+const activities = [
+	{name: "frens play", type: "WATCHING"},
+	{name: "helping frens", type: "CUSTOM_STATUS"},
+	{name: "Waiting for frens to play with", type: "CUSTOM_STATUS"},
+	{name: "alone", type: "PLAYING"},
+	{name: "frens", type: "LISTENING"},
+];
 
 bot.on("ready", function() {
 	console.log(`${bot.user.username} is online!`);
+	setInterval(() => {
+		const activity = activities[misc.random(0, activities.length)];
+		bot.user.setActivity(activity);
+	}, 3600000);
 });
 
 bot.login(process.env.token);

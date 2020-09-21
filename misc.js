@@ -19,4 +19,9 @@ exports.timeout = function(delayms) {
     return new Promise(function (resolve, reject) {
         setTimeout(resolve, delayms);
     });
+};
+
+exports.random = function(min, max) {
+	const delta = max - min;
+	return Math.floor(Math.random() * delta) + min;
 }
