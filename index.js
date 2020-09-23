@@ -7,16 +7,18 @@ const commands = require("./command");
 const bot = new Discord.Client({
 	presence: {
 		status: "online",
-		activity: RandomActivity()
+		activity: RandomActivity(),
 	}, partials: ['MESSAGE', 'REACTION'],
 });
 
 function RandomActivity() {
 	const activities = [
 		{name: "frens play", type: "WATCHING"},
-		{name: "helping frens", type: "CUSTOM_STATUS"},
-		{name: "Waiting for frens to play with", type: "CUSTOM_STATUS"},
+		{name: "help for frens", type: "STREAMING"},
+		{name: "frens playing", type: "LISTENING"},
 		{name: "alone", type: "PLAYING"},
+		{name: "alone", type: "STREAMING"},
+		{name: "with frens from a different school", type: "PLAYING"},
 		{name: "frens", type: "LISTENING"},
 	];
 	return activities[misc.random(0, activities.length)];
@@ -35,6 +37,12 @@ bot.on("message", message => {
 	commands.parseMessage(message);
 });
 
+bot.on('guildMemberRemove', (member) => {
+	const mainGuild = bot.guilds.cache.find((guild) => guild.id == consts.server);
+	const general = mainGuild.channels.cache.find((channel) => channel.id == consts.channels.GeneralText);
+
+	general.send({content: `${member.nickname} left.`});
+});
 
 bot.on("messageReactionAdd", async (reaction, user) => {
 	if (user.id == bot.user.id)

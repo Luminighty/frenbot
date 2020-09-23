@@ -18,4 +18,5 @@ exports.server = '756916913774395443';
 
 exports.channels = {
 	MainVoice: '756916914655330379',
+	GeneralText: '756916914655330378',
 };
